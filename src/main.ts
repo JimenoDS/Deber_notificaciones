@@ -2,8 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true }); // 👈 habilita CORS aquí
-  await app.listen(3000, 'O0.0.0.0'); // Escucha en todas las interfaces de red
+  const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+    origin: 'https://fronted-notificaciones.vercel.app/',
+    methods: 'GET,POST,PUT,DELETE',
+  });
+
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
-
