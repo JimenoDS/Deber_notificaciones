@@ -6,20 +6,27 @@ import { AppService } from './app.service';
 import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      url: process.env.DATABASE_URL,
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
-    NotificationsModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+
+      // --- ESTA ES LA CORRECCIÓN PARA EL ERROR SSL/TLS ---
+      ssl: {
+        rejectUnauthorized: false,
+      },
+      // ---------------------------------------------------
+
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
+    NotificationsModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
 
